@@ -81,12 +81,22 @@
 
                     <v-stepper-content step="4">
                         <v-row class="next-step-row flex justify-end">
-                            <v-btn
-                                    class="mt-3"
-                                    color="success"
-                                    @click="endOrder">
-                                Завершить заказ
-                            </v-btn>
+                            <v-card-text>
+                                <p class="main-title" style="text-align: center">
+                                    Заказ успешно выполнен!
+                                </p>
+                                <p class="sub-title" style="text-align: center">
+                                    Спасибо за то, что помогаете людям
+                                </p>
+                            </v-card-text>
+                            <v-card-actions>
+                                <v-btn
+                                        class="mt-3"
+                                        color="success"
+                                        @click="endOrder">
+                                    Завершить заказ
+                                </v-btn>
+                            </v-card-actions>
                         </v-row>
                     </v-stepper-content>
                 </v-stepper-items>
@@ -141,6 +151,16 @@ export default {
 
 .next-step-row {
     margin-bottom: 10px;
+}
+
+.main-title {
+    font-size: 50px;
+    line-height: 90px;
+    font-weight: bold;
+}
+
+.sub-title {
+    font-size: 25px;
 }
 
 </style>

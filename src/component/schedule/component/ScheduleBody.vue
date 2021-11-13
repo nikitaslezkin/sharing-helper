@@ -39,6 +39,13 @@
                             {{ $refs.calendar.title }}
                         </v-toolbar-title>
                         <v-spacer></v-spacer>
+                        <v-btn
+                                class="mr-4"
+                                outlined
+                                color="#B5D66B"
+                        >
+                            <v-icon>mdi-plus</v-icon>
+                        </v-btn>
                         <v-menu
                                 bottom
                                 right
@@ -134,10 +141,20 @@
                             </v-toolbar>
                             <v-card-text>
                                 <p style="text-align: left">
-                                    Партнер: {{ selectedEvent.partner }}
+                                    <b>Статус: </b>
+                                    <v-chip>
+                                        {{ selectedEvent.status }}
+                                    </v-chip>
+                                </p>
+                                <p style="text-align: left">
+                                    <b>Партнер:</b> {{ selectedEvent.partner }}
+                                </p>
+                                <p style="text-align: left">
+                                    <b>Адрес:</b> {{ selectedEvent.address }}
                                 </p>
                             </v-card-text>
                             <v-card-actions>
+                                <v-spacer></v-spacer>
                                 <v-btn
                                         text
                                         color="secondary"
@@ -301,7 +318,9 @@ export default {
             events.push({
                 name: "Петров А.В",
                 volunteer: "Петров А.В",
-                partner: "ООО \"Пятерочка\""    ,
+                partner: "ООО \"Пятерочка\"",
+                address: 'ул. Шаболовка, 19',
+                status: 'Выдает',
                 color: "#E72C20",
                 start: startDate,
                 end: startDate + 2 * 3600000,
@@ -313,6 +332,8 @@ export default {
                 name: "Соколова К.А",
                 volunteer: "Соколова К.А",
                 partner: "ООО \"Лента\"",
+                address: 'Ленинский пр-т., 30',
+                status: 'Забирает',
                 color: "#111F90",
                 start: startDate,
                 end: startDate + 2 * 3600000,
@@ -324,6 +345,8 @@ export default {
                 name: "Иванов М.М",
                 volunteer: "Иванов М.М",
                 partner: "АО \"Дикси\"",
+                address: 'ул. Шаболовка, 37 строение 5',
+                status: 'Ожидает',
                 color: "#FF6A00",
                 start: startDate,
                 end: startDate + 2 * 3600000,
@@ -335,6 +358,8 @@ export default {
                 name: "Смирнов В.М",
                 volunteer: "Смирнов В.М",
                 partner: "АО \"Перекресток\"",
+                address: 'Мытная ул., 46-2',
+                status: 'Ожидает',
                 color: "#005523",
                 start: startDate,
                 end: startDate + 2 * 3600000,
@@ -346,6 +371,8 @@ export default {
                 name: "Захарова А.А",
                 volunteer: "Захарова А.А",
                 partner: "АО \"Дикси\"",
+                address: 'ул. Шаболовка, 37 строение 5',
+                status: 'Ожидает',
                 color: "#FF6A00",
                 start: startDate,
                 end: startDate + 2 * 3600000,
@@ -357,6 +384,8 @@ export default {
                 name: "Петров А.В",
                 volunteer: "Петров А.В",
                 partner: "АО \"Перекресток\"",
+                address: 'Мытная ул., 46-2',
+                status: 'Ожидает',
                 color: "#005523",
                 start: startDate,
                 end: startDate + 2 * 3600000,
@@ -367,7 +396,9 @@ export default {
             events.push({
                 name: "Смирнов В.М",
                 volunteer: "Смирнов В.М",
-                partner: "ООО \"Пятерочка\""    ,
+                partner: "ООО \"Пятерочка\"",
+                address: 'ул. Шаболовка, 19',
+                status: 'Ожидает',
                 color: "#E72C20",
                 start: startDate,
                 end: startDate + 2 * 3600000,
@@ -379,6 +410,8 @@ export default {
                 name: "Иванов М.М",
                 volunteer: "Иванов М.М",
                 partner: "ООО \"Лента\"",
+                address: 'Ленинский пр-т., 30',
+                status: 'Ожидает',
                 color: "#111F90",
                 start: startDate,
                 end: startDate + 2 * 3600000,

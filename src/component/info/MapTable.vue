@@ -4,7 +4,23 @@
                 :items="items"
                 :headers="headers"
                 hide-default-footer
-        />
+        >
+            <template v-slot:body.prepend>
+                <tr>
+                    <td colspan="3">
+                        <v-spacer></v-spacer>
+                        <v-btn
+                                width="100%"
+                                outlined
+                                color="#B5D66B">
+                            <v-icon>mdi-plus</v-icon>
+                        </v-btn>
+                        <v-spacer></v-spacer>
+                    </td>
+                </tr>
+            </template>
+
+        </v-data-table>
 
         <div class="text-center mt-10 mb-4">
             <v-pagination
