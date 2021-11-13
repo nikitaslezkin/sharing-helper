@@ -19,12 +19,13 @@
 </template>
 
 <script>
-import { yandexMap, ymapMarker } from "vue-yandex-maps";
+import {yandexMap, ymapMarker} from "vue-yandex-maps";
+
 export default {
 
     name: "YaMap",
 
-    components: { yandexMap, ymapMarker },
+    components: {yandexMap, ymapMarker},
 
     props: {
         items: Array,
@@ -32,7 +33,7 @@ export default {
 
     data() {
         return {
-            coords: [55.719868,37.607390],
+            coords: [55.719868, 37.607390],
             options: {
                 layout: "default#image",
                 imageSize: [20, 30],
@@ -63,7 +64,7 @@ export default {
             return data;
         },
 
-        makeSurfaceSelected: function(surface_id) {
+        makeSurfaceSelected: function (surface_id) {
             this.items.forEach(surface => {
                 if (surface.surface_id === surface_id) {
                     surface.selected = true;
@@ -71,13 +72,13 @@ export default {
             });
         },
 
-        mapBalloon: function(billboard, index) {
+        mapBalloon: function (billboard, index) {
             return `
-      <div><h1>${billboard.id}</h1>
-      <p v-if="billboard.name !== 'emp'"><strong>Магазин</strong>: ${billboard.name}</p>
-      <p v-if="billboard.fio !== 'emp'"><strong>Имя</strong>: ${billboard.fio}</p>
-      <p v-if="billboard.address !== 'emp'"><strong>Адрес</strong>: ${billboard.address}</p>
-      <p v-if="billboard.time !== 'emp'"><strong>Время выдачи</strong>: ${billboard.time}</p>
+      <div><h1>${billboard.id}</h1></br>
+      <p style="display: ${billboard.name === 'emp' ? 'none' : ''}"><strong>Магазин</strong>: ${billboard.name}</p>
+      <p style="display: ${billboard.fio === 'emp' ? 'none' : ''}"><strong>Имя</strong>: ${billboard.fio}</p>
+      <p style="display: ${billboard.address === 'emp' ? 'none' : ''}"><strong>Адрес</strong>: ${billboard.address}</p>
+      <p style="display: ${billboard.time === 'emp' ? 'none' : ''}"><strong>Время выдачи</strong>: ${billboard.time}</p>
       </div>
       `;
         }
@@ -90,14 +91,17 @@ h1,
 h2 {
     font-weight: normal;
 }
+
 ul {
     list-style-type: none;
     padding: 0;
 }
+
 li {
     display: inline-block;
     margin: 0;
 }
+
 a {
     color: #42b983;
 }

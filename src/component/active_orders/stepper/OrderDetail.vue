@@ -47,12 +47,51 @@
                 <v-stepper-items>
                     <v-stepper-content step="1">
                         <v-row class="next-step-row flex justify-end">
-                            <v-btn
-                                    class="mt-3"
-                                    color="success"
-                                    @click="generateStep2">
-                                Продолжить
-                            </v-btn>
+                            <v-card-text>
+                                <v-text-field
+                                        v-model="item.partner"
+                                        label="Партнер"
+                                        required
+                                        color="black"
+                                        outlined
+                                        dense
+                                        readonly
+                                ></v-text-field>
+                                <v-text-field
+                                        v-model="item.address"
+                                        label="Адрес"
+                                        required
+                                        color="black"
+                                        outlined
+                                        dense
+                                        readonly
+                                ></v-text-field>
+                                <v-text-field
+                                        v-model="item.time"
+                                        label="Часы работы:"
+                                        required
+                                        color="black"
+                                        outlined
+                                        dense
+                                        readonly
+                                ></v-text-field>
+
+                                <v-data-table
+                                        :items="wardsItems"
+                                        :headers="wardsHeaders"
+                                        caption="Список подопечных"
+                                        hide-default-footer
+                                >
+                                </v-data-table>
+                            </v-card-text>
+                            <v-card-actions>
+                                <v-btn
+                                        class="mt-3"
+                                        color="success"
+                                        @click="generateStep2">
+                                    Понятно
+                                </v-btn>
+                            </v-card-actions>
                         </v-row>
                     </v-stepper-content>
 
@@ -63,7 +102,7 @@
                                     class="mt-3"
                                     color="success"
                                     @click="generateStep3">
-                                Продолжить
+                                Далее
                             </v-btn>
                         </v-row>
                     </v-stepper-content>
@@ -74,7 +113,7 @@
                                     class="mt-3"
                                     color="success"
                                     @click="generateStep4">
-                                Отправить
+                                Далее
                             </v-btn>
                         </v-row>
                     </v-stepper-content>
@@ -117,7 +156,41 @@ export default {
     components: {},
 
 
-    data: () => ({}),
+    data: () => ({
+        item: {
+            number: 1,
+            id: '18c7633b-daef-4cbc-92c5-a5f06a1ef43c',
+            date: '14.11.2021г. (21.00-22.00)',
+            volunteer: 'Петров А.В',
+            partner: "ООО \"Пятерочка\"",
+            address: 'ул. Шаболовка, 19',
+            time: '21:00-23:00',
+            wards: 'Соколова К.А, Иванова В.В',
+        },
+
+        wardsHeaders: [
+            {text: "№", value: 'id'},
+            {text: "ФИО", value: 'fio'},
+            {text: "Адрес", value: 'address'},
+        ],
+
+        wardsItems: [
+            {
+                id: 1,
+                fio: 'Соколова К.А',
+                address: 'ул. Донская, 8, кв. 17',
+                coords: "55.723869,37.607108",
+                name: "emp", time: "emp"
+            },
+            {
+                id: 2,
+                fio: 'Иванова В.В',
+                address: 'Мытная ул., 44, кв. 134',
+                coords: "55.721070,37.615823",
+                name: "emp", time: "emp"
+            },
+        ],
+    }),
 
     computed: {
         ...mapGetters(['order']),
