@@ -19,7 +19,6 @@
                     </td>
                 </tr>
             </template>
-
         </v-data-table>
 
         <div class="text-center mt-10 mb-4">

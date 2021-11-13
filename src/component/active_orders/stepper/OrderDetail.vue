@@ -9,7 +9,7 @@
                             :complete="order.step > 1"
                             step="1">
                         <label>
-                            Информация о заказе
+                            Информация
                         </label>
                     </v-stepper-step>
 
@@ -31,13 +31,35 @@
                             :complete="order.step > 3"
                             step="3">
                         <label>
-                            Документы (подопечные)
+                            Позиции (партнер)
                         </label>
                     </v-stepper-step>
 
                     <v-divider></v-divider>
 
-                    <v-stepper-step step="4" color="success">
+                    <v-stepper-step
+                            color="success"
+                            :complete="order.step > 4"
+                            step="4">
+                        <label>
+                            Документы
+                        </label>
+                    </v-stepper-step>
+
+                    <v-divider></v-divider>
+
+                    <v-stepper-step
+                            color="success"
+                            :complete="order.step > 5"
+                            step="5">
+                        <label>
+                            Позиции
+                        </label>
+                    </v-stepper-step>
+
+                    <v-divider></v-divider>
+
+                    <v-stepper-step step="6" color="success">
                         <label>
                             Завершение
                         </label>
@@ -48,6 +70,7 @@
                     <v-stepper-content step="1">
                         <v-row class="next-step-row flex justify-end">
                             <v-card-text>
+                                <p align="center">Информация о партнере</p>
                                 <v-text-field
                                         v-model="item.partner"
                                         label="Партнер"
@@ -76,6 +99,8 @@
                                         readonly
                                 ></v-text-field>
 
+                                <br/>
+
                                 <v-data-table
                                         :items="wardsItems"
                                         :headers="wardsHeaders"
@@ -88,37 +113,437 @@
                                 <v-btn
                                         class="mt-3"
                                         color="success"
-                                        @click="generateStep2">
-                                    Понятно
+                                        @click="order.step = 2">
+                                    Далее
                                 </v-btn>
                             </v-card-actions>
                         </v-row>
                     </v-stepper-content>
 
                     <v-stepper-content step="2">
-
                         <v-row class="next-step-row flex justify-end">
-                            <v-btn
-                                    class="mt-3"
-                                    color="success"
-                                    @click="generateStep3">
-                                Далее
-                            </v-btn>
+                            <v-col class="form fixed">
+                                <v-card-text>
+                                    <div class="file-input-container">
+                                        <v-col>
+                                            <v-row style="margin-top: 10px;">
+                                                <v-spacer></v-spacer>
+                                                <v-img :src="require('../../../assets/upload-file.png')"
+                                                       max-width="75px" max-height="100px">
+                                                </v-img>
+                                                <v-spacer></v-spacer>
+                                            </v-row>
+                                            <br>
+                                            <v-row justify="center" align="center"
+                                                   style="width: 100%; margin-top: 10px; margin-bottom: 10px">
+                                                <p class="ml-2">
+                                                    <a class="file-container">
+                                                        Загрузите акт с компьютера
+                                                        <input type="file"
+                                                               multiple
+                                                               @change="addFiles"
+                                                        >
+                                                    </a>
+                                                </p>
+                                            </v-row>
+                                            <br>
+                                            <v-row justify="center" align="center" style="width: 100%">
+                                                <p v-if="files.length > 0">
+                                                    Файлов: {{ files.length }} (всего {{ filesSize }} MB)
+                                                </p>
+                                                <p v-if="files.length > 0">
+                                                    &nbsp;<v-icon color="success">mdi-check</v-icon>
+                                                </p>
+                                            </v-row>
+                                        </v-col>
+                                    </div>
+                                </v-card-text>
+                            </v-col>
+                        </v-row>
+                        <v-row class="next-step-row flex justify-end">
+                            <v-card-actions>
+                                <v-btn
+                                        :disabled="!(files.length > 0)"
+                                        class="mt-3"
+                                        color="success"
+                                        @click="order.step = 3">
+                                    Далее
+                                </v-btn>
+                            </v-card-actions>
                         </v-row>
                     </v-stepper-content>
 
                     <v-stepper-content step="3">
                         <v-row class="next-step-row flex justify-end">
-                            <v-btn
-                                    class="mt-3"
-                                    color="success"
-                                    @click="generateStep4">
-                                Далее
-                            </v-btn>
+                            <v-card-text>
+                                <v-data-table
+                                        :items="items"
+                                        :headers="headers"
+                                        caption="Список позиций, полученных от партнера"
+                                        hide-default-footer
+                                >
+                                    <template v-slot:body.append>
+                                        <tr>
+                                            <td colspan="3">
+                                                <v-spacer></v-spacer>
+                                                <v-dialog
+                                                        v-model="dialog"
+                                                        max-width="500px"
+                                                >
+                                                    <template v-slot:activator="{ on, attrs }">
+                                                        <v-btn
+                                                                width="100%"
+                                                                outlined
+                                                                v-bind="attrs"
+                                                                v-on="on"
+                                                                color="#B5D66B">
+                                                            <v-icon>mdi-plus</v-icon>
+                                                        </v-btn>
+                                                    </template>
+                                                    <v-card>
+                                                        <v-card-title>
+                                                            <span class="text-h5">Добавить позицию</span>
+                                                        </v-card-title>
+
+                                                        <v-card-text>
+                                                            <v-container>
+                                                                <v-row>
+                                                                    <v-col>
+                                                                        <v-text-field
+                                                                                v-model="editedItem.name"
+                                                                                label="Название"
+                                                                        ></v-text-field>
+                                                                    </v-col>
+                                                                    <v-col>
+                                                                        <v-text-field
+                                                                                v-model="editedItem.count"
+                                                                                label="Количество"
+                                                                        ></v-text-field>
+                                                                    </v-col>
+                                                                </v-row>
+                                                            </v-container>
+                                                        </v-card-text>
+
+                                                        <v-card-actions>
+                                                            <v-spacer></v-spacer>
+                                                            <v-btn
+                                                                    color="blue darken-1"
+                                                                    text
+                                                                    @click="close"
+                                                            >
+                                                                Закрыть
+                                                            </v-btn>
+                                                            <v-btn
+                                                                    color="blue darken-1"
+                                                                    text
+                                                                    @click="addItem"
+                                                            >
+                                                                Добавить
+                                                            </v-btn>
+                                                        </v-card-actions>
+                                                    </v-card>
+                                                </v-dialog>
+                                                <v-spacer></v-spacer>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </v-data-table>
+                            </v-card-text>
+                            <v-card-actions>
+                                <v-btn
+                                        class="mt-3"
+                                        color="success"
+                                        @click="order.step = 4">
+                                    Понятно
+                                </v-btn>
+                            </v-card-actions>
                         </v-row>
                     </v-stepper-content>
 
                     <v-stepper-content step="4">
+                        <v-tabs fixed-tabs color="black" slider-color="grey">
+                            <v-tab>Соколова К.А</v-tab>
+                            <v-tab>Иванова В.В</v-tab>
+
+                            <v-tab-item>
+                                <br/>
+                                <v-row class="next-step-row flex justify-end">
+                                    <v-col class="form fixed">
+                                        <v-card-text>
+                                            <div class="file-input-container">
+                                                <v-col>
+                                                    <v-row style="margin-top: 10px;">
+                                                        <v-spacer></v-spacer>
+                                                        <v-img :src="require('../../../assets/upload-file.png')"
+                                                               max-width="75px" max-height="100px">
+                                                        </v-img>
+                                                        <v-spacer></v-spacer>
+                                                    </v-row>
+                                                    <br>
+                                                    <v-row justify="center" align="center"
+                                                           style="width: 100%; margin-top: 10px; margin-bottom: 10px">
+                                                        <p class="ml-2">
+                                                            <a class="file-container">
+                                                                Загрузите акт с компьютера
+                                                                <input type="file"
+                                                                       multiple
+                                                                       @change="addFilesFirstWard"
+                                                                >
+                                                            </a>
+                                                        </p>
+                                                    </v-row>
+                                                    <br>
+                                                    <v-row justify="center" align="center" style="width: 100%">
+                                                        <p v-if="filesFirstWard.length > 0">
+                                                            Файлов: {{ filesFirstWard.length }} (всего
+                                                            {{ filesSizeFirstWard }} MB)
+                                                        </p>
+                                                        <p v-if="filesFirstWard.length > 0">
+                                                            &nbsp;<v-icon color="success">mdi-check</v-icon>
+                                                        </p>
+                                                    </v-row>
+                                                </v-col>
+                                            </div>
+                                        </v-card-text>
+                                    </v-col>
+                                </v-row>
+                            </v-tab-item>
+
+                            <v-tab-item>
+                                <br/>
+                                <v-row class="next-step-row flex justify-end">
+                                    <v-col class="form fixed">
+                                        <v-card-text>
+                                            <div class="file-input-container">
+                                                <v-col>
+                                                    <v-row style="margin-top: 10px;">
+                                                        <v-spacer></v-spacer>
+                                                        <v-img :src="require('../../../assets/upload-file.png')"
+                                                               max-width="75px" max-height="100px">
+                                                        </v-img>
+                                                        <v-spacer></v-spacer>
+                                                    </v-row>
+                                                    <br>
+                                                    <v-row justify="center" align="center"
+                                                           style="width: 100%; margin-top: 10px; margin-bottom: 10px">
+                                                        <p class="ml-2">
+                                                            <a class="file-container">
+                                                                Загрузите акт с компьютера
+                                                                <input type="file"
+                                                                       multiple
+                                                                       @change="addFilesSecondWard"
+                                                                >
+                                                            </a>
+                                                        </p>
+                                                    </v-row>
+                                                    <br>
+                                                    <v-row justify="center" align="center" style="width: 100%">
+                                                        <p v-if="filesSecondWard.length > 0">
+                                                            Файлов: {{ filesSecondWard.length }} (всего
+                                                            {{ filesSizeSecondWard }} MB)
+                                                        </p>
+                                                        <p v-if="filesSecondWard.length > 0">
+                                                            &nbsp;<v-icon color="success">mdi-check</v-icon>
+                                                        </p>
+                                                    </v-row>
+                                                </v-col>
+                                            </div>
+                                        </v-card-text>
+                                    </v-col>
+                                </v-row>
+                            </v-tab-item>
+                        </v-tabs>
+                        <v-row class="next-step-row flex justify-end">
+                            <v-card-actions>
+                                <v-btn
+                                        :disabled="!(filesFirstWard.length > 0 || filesSecondWard.length > 0)"
+                                        class="mt-3"
+                                        color="success"
+                                        @click="order.step = 5">
+                                    Далее
+                                </v-btn>
+                            </v-card-actions>
+                        </v-row>
+                    </v-stepper-content>
+
+                    <v-stepper-content step="5">
+                        <v-tabs fixed-tabs color="black" slider-color="grey">
+                            <v-tab>Соколова К.А</v-tab>
+                            <v-tab>Иванова В.В</v-tab>
+
+                            <v-tab-item>
+                                <br/>
+                                <v-row class="next-step-row flex justify-end">
+                                    <v-card-text>
+                                        <v-data-table
+                                                :items="itemsFirstWard"
+                                                :headers="headers"
+                                                caption="Список позиций, отданных подопечному"
+                                                hide-default-footer
+                                        >
+                                            <template v-slot:body.append>
+                                                <tr>
+                                                    <td colspan="3">
+                                                        <v-spacer></v-spacer>
+                                                        <v-dialog
+                                                                v-model="dialogFirstWard"
+                                                                max-width="500px"
+                                                        >
+                                                            <template v-slot:activator="{ on, attrs }">
+                                                                <v-btn
+                                                                        width="100%"
+                                                                        outlined
+                                                                        v-bind="attrs"
+                                                                        v-on="on"
+                                                                        color="#B5D66B">
+                                                                    <v-icon>mdi-plus</v-icon>
+                                                                </v-btn>
+                                                            </template>
+                                                            <v-card>
+                                                                <v-card-title>
+                                                                    <span class="text-h5">Добавить позицию</span>
+                                                                </v-card-title>
+
+                                                                <v-card-text>
+                                                                    <v-container>
+                                                                        <v-row>
+                                                                            <v-col>
+                                                                                <v-text-field
+                                                                                        v-model="editedItem.name"
+                                                                                        label="Название"
+                                                                                ></v-text-field>
+                                                                            </v-col>
+                                                                            <v-col>
+                                                                                <v-text-field
+                                                                                        v-model="editedItem.count"
+                                                                                        label="Количество"
+                                                                                ></v-text-field>
+                                                                            </v-col>
+                                                                        </v-row>
+                                                                    </v-container>
+                                                                </v-card-text>
+
+                                                                <v-card-actions>
+                                                                    <v-spacer></v-spacer>
+                                                                    <v-btn
+                                                                            color="blue darken-1"
+                                                                            text
+                                                                            @click="close"
+                                                                    >
+                                                                        Закрыть
+                                                                    </v-btn>
+                                                                    <v-btn
+                                                                            color="blue darken-1"
+                                                                            text
+                                                                            @click="addItemFirstWard"
+                                                                    >
+                                                                        Добавить
+                                                                    </v-btn>
+                                                                </v-card-actions>
+                                                            </v-card>
+                                                        </v-dialog>
+                                                        <v-spacer></v-spacer>
+                                                    </td>
+                                                </tr>
+                                            </template>
+                                        </v-data-table>
+                                    </v-card-text>
+                                </v-row>
+                            </v-tab-item>
+
+                            <v-tab-item>
+                                <br/>
+                                <v-row class="next-step-row flex justify-end">
+                                    <v-card-text>
+                                        <v-data-table
+                                                :items="itemsSecondWard"
+                                                :headers="headers"
+                                                caption="Список позиций, отданных подопечному"
+                                                hide-default-footer
+                                        >
+                                            <template v-slot:body.append>
+                                                <tr>
+                                                    <td colspan="3">
+                                                        <v-spacer></v-spacer>
+                                                        <v-dialog
+                                                                v-model="dialogSecondWard"
+                                                                max-width="500px"
+                                                        >
+                                                            <template v-slot:activator="{ on, attrs }">
+                                                                <v-btn
+                                                                        width="100%"
+                                                                        outlined
+                                                                        v-bind="attrs"
+                                                                        v-on="on"
+                                                                        color="#B5D66B">
+                                                                    <v-icon>mdi-plus</v-icon>
+                                                                </v-btn>
+                                                            </template>
+                                                            <v-card>
+                                                                <v-card-title>
+                                                                    <span class="text-h5">Добавить позицию</span>
+                                                                </v-card-title>
+
+                                                                <v-card-text>
+                                                                    <v-container>
+                                                                        <v-row>
+                                                                            <v-col>
+                                                                                <v-text-field
+                                                                                        v-model="editedItem.name"
+                                                                                        label="Название"
+                                                                                ></v-text-field>
+                                                                            </v-col>
+                                                                            <v-col>
+                                                                                <v-text-field
+                                                                                        v-model="editedItem.count"
+                                                                                        label="Количество"
+                                                                                ></v-text-field>
+                                                                            </v-col>
+                                                                        </v-row>
+                                                                    </v-container>
+                                                                </v-card-text>
+
+                                                                <v-card-actions>
+                                                                    <v-spacer></v-spacer>
+                                                                    <v-btn
+                                                                            color="blue darken-1"
+                                                                            text
+                                                                            @click="close"
+                                                                    >
+                                                                        Закрыть
+                                                                    </v-btn>
+                                                                    <v-btn
+                                                                            color="blue darken-1"
+                                                                            text
+                                                                            @click="addItemSecondWard"
+                                                                    >
+                                                                        Добавить
+                                                                    </v-btn>
+                                                                </v-card-actions>
+                                                            </v-card>
+                                                        </v-dialog>
+                                                        <v-spacer></v-spacer>
+                                                    </td>
+                                                </tr>
+                                            </template>
+                                        </v-data-table>
+                                    </v-card-text>
+                                </v-row>
+                            </v-tab-item>
+                        </v-tabs>
+                        <v-row class="next-step-row flex justify-end">
+                            <v-card-actions>
+                                <v-btn
+                                        class="mt-3"
+                                        color="success"
+                                        @click="order.step = 6">
+                                    Далее
+                                </v-btn>
+                            </v-card-actions>
+                        </v-row>
+                    </v-stepper-content>
+
+                    <v-stepper-content step="6">
                         <v-row class="next-step-row flex justify-end">
                             <v-card-text>
                                 <p class="main-title" style="text-align: center">
@@ -140,7 +565,6 @@
                     </v-stepper-content>
                 </v-stepper-items>
             </v-stepper>
-
         </v-col>
         <v-spacer></v-spacer>
     </v-row>
@@ -154,7 +578,6 @@ import {mapGetters, mapMutations} from "vuex";
 export default {
     name: "OrderDetail",
     components: {},
-
 
     data: () => ({
         item: {
@@ -190,26 +613,121 @@ export default {
                 name: "emp", time: "emp"
             },
         ],
+
+        files: [],
+        filesFirstWard: [],
+        filesSecondWard: [],
+
+        headers: [
+            {text: "Наименование позиции", value: 'name'},
+            {text: "Количество", value: 'count'},
+        ],
+
+        items: [],
+        itemsFirstWard: [],
+        itemsSecondWard: [],
+        editedItem: {},
+        dialog: false,
+        dialogFirstWard: false,
+        dialogSecondWard: false,
     }),
 
     computed: {
         ...mapGetters(['order']),
+
+        filesSize() {
+            if (this.files.length > 0) {
+                let size = 0;
+
+                this.files.forEach(file => {
+                    size += file.size;
+                })
+
+                return parseFloat(size / 1024 / 1024).toFixed(2);
+            } else {
+                return 0;
+            }
+        },
+
+        filesSizeFirstWard() {
+            if (this.filesFirstWard.length > 0) {
+                let size = 0;
+
+                this.filesFirstWard.forEach(file => {
+                    size += file.size;
+                })
+
+                return parseFloat(size / 1024 / 1024).toFixed(2);
+            } else {
+                return 0;
+            }
+        },
+
+        filesSizeSecondWard() {
+            if (this.filesSecondWard.length > 0) {
+                let size = 0;
+
+                this.filesSecondWard.forEach(file => {
+                    size += file.size;
+                })
+
+                return parseFloat(size / 1024 / 1024).toFixed(2);
+            } else {
+                return 0;
+            }
+        }
     },
 
     methods: {
 
         ...mapMutations(['setOrder']),
 
-        generateStep2() {
-            this.order.step = 2;
+        addItem() {
+            this.items.push(this.editedItem);
+            this.dialog = false;
+            this.editedItem = {};
         },
 
-        generateStep3() {
-            this.order.step = 3;
+        addItemFirstWard() {
+            this.itemsFirstWard.push(this.editedItem);
+            this.dialogFirstWard = false;
+            this.editedItem = {};
         },
 
-        generateStep4() {
-            this.order.step = 4;
+        addItemSecondWard() {
+            this.itemsSecondWard.push(this.editedItem);
+            this.dialogSecondWard = false;
+            this.editedItem = {};
+        },
+
+        addFiles(e) {
+            let files = e.target.files;
+            if (files.length >= 1) {
+                for (let i = 0; i < files.length; i++) {
+                    let file = files[i];
+                    this.files.push(file);
+                }
+            }
+        },
+
+        addFilesFirstWard(e) {
+            let files = e.target.files;
+            if (files.length >= 1) {
+                for (let i = 0; i < files.length; i++) {
+                    let file = files[i];
+                    this.filesFirstWard.push(file);
+                }
+            }
+        },
+
+        addFilesSecondWard(e) {
+            let files = e.target.files;
+            if (files.length >= 1) {
+                for (let i = 0; i < files.length; i++) {
+                    let file = files[i];
+                    this.filesSecondWard.push(file);
+                }
+            }
         },
 
         endOrder() {
@@ -234,6 +752,33 @@ export default {
 
 .sub-title {
     font-size: 25px;
+}
+
+.file-input-container {
+    width: 100%;
+    min-width: 100%;
+}
+
+.file-input-container:hover {
+    border-radius: 10px;
+    background-color: rgba(232, 232, 232, 0.35);
+}
+
+a.file-container {
+    overflow: hidden;
+    cursor: pointer;
+}
+
+a.file-container > input[type=file] {
+    cursor: inherit;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: right;
+    width: 100%;
+    height: 100%;
 }
 
 </style>
