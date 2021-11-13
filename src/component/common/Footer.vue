@@ -22,7 +22,7 @@
 
                     <v-col cols="1">
                         <div>
-                            <a>
+                            <a href="https://github.com/nikitaslezkin/sharing-helper">
                                 <v-icon class="footer-icon">mdi-github</v-icon>
                             </a>
 
