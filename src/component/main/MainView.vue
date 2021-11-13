@@ -9,7 +9,10 @@
             <v-col cols="8">
                 <v-row class="justify-start align-start pt-15">
                     <v-row style="width: 100%">
-                        <p class="main-title ml-2">Желаете начать помогать людям?</p>
+                        <p class="main-title ml-2">Желаете начать</p>
+                    </v-row>
+                    <v-row style="width: 100%">
+                        <p class="main-title ml-2">помогать людям?</p>
                     </v-row>
                     <v-row style="width: 100%">
                         <p class="sub-title ml-2">Присоединяйтесь к движению Фудшеринг</p>
