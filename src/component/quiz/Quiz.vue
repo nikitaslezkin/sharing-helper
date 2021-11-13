@@ -44,13 +44,17 @@
 
                 <br/>
 
-                <v-btn
-                        color="red lighten-2"
-                        dark
-                        @click="showDialog"
-                >
-                    Отправить тест
-                </v-btn>
+                <v-row style="margin-top: 10px; margin-bottom: 60px">
+                    <v-spacer></v-spacer>
+                    <v-btn
+                            color="#B5D66B"
+                            dark
+                            @click="showDialog"
+                    >
+                        Отправить тест
+                    </v-btn>
+                    <v-spacer></v-spacer>
+                </v-row>
 
 
                         <v-dialog
