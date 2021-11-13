@@ -66,48 +66,74 @@
                     </v-stepper-step>
                 </v-stepper-header>
 
+
+
                 <v-stepper-items>
                     <v-stepper-content step="1">
                         <v-row class="next-step-row flex justify-end">
                             <v-card-text>
-                                <p align="center">Информация о партнере</p>
-                                <v-text-field
-                                        v-model="item.partner"
-                                        label="Партнер"
-                                        required
-                                        color="black"
-                                        outlined
-                                        dense
-                                        readonly
-                                ></v-text-field>
-                                <v-text-field
-                                        v-model="item.address"
-                                        label="Адрес"
-                                        required
-                                        color="black"
-                                        outlined
-                                        dense
-                                        readonly
-                                ></v-text-field>
-                                <v-text-field
-                                        v-model="item.time"
-                                        label="Часы работы:"
-                                        required
-                                        color="black"
-                                        outlined
-                                        dense
-                                        readonly
-                                ></v-text-field>
 
-                                <br/>
 
-                                <v-data-table
-                                        :items="wardsItems"
-                                        :headers="wardsHeaders"
-                                        caption="Список подопечных"
-                                        hide-default-footer
-                                >
-                                </v-data-table>
+                                <v-col cols="8">
+
+                                    <v-tabs fixed-tabs color="black" slider-color="grey">
+                                        <v-tab>Информация</v-tab>
+                                        <v-tab>Карта</v-tab>
+
+                                        <v-tab-item>
+                                            <br/>
+
+                                            <p align="center">Информация о партнере</p>
+                                            <v-text-field
+                                                    v-model="item.partner"
+                                                    label="Партнер"
+                                                    required
+                                                    color="black"
+                                                    outlined
+                                                    dense
+                                                    readonly
+                                            ></v-text-field>
+                                            <v-text-field
+                                                    v-model="item.address"
+                                                    label="Адрес"
+                                                    required
+                                                    color="black"
+                                                    outlined
+                                                    dense
+                                                    readonly
+                                            ></v-text-field>
+                                            <v-text-field
+                                                    v-model="item.time"
+                                                    label="Часы работы:"
+                                                    required
+                                                    color="black"
+                                                    outlined
+                                                    dense
+                                                    readonly
+                                            ></v-text-field>
+
+                                            <br/>
+
+                                            <v-data-table
+                                                    :items="wardsItems"
+                                                    :headers="wardsHeaders"
+                                                    caption="Список подопечных"
+                                                    hide-default-footer
+                                            >
+                                            </v-data-table>
+                                        </v-tab-item>
+
+                                        <v-tab-item>
+                                            <br/>
+                                            <YaMap :items="cardItems"/>
+                                        </v-tab-item>
+                                    </v-tabs>
+                                </v-col>
+
+
+
+
+
                             </v-card-text>
                             <v-card-actions>
                                 <v-btn
@@ -573,11 +599,14 @@
 <script>
 
 import {mapGetters, mapMutations} from "vuex";
+import YaMap from "@/component/common/YaMap";
 
 
 export default {
     name: "OrderDetail",
-    components: {},
+    components: {
+        YaMap,
+    },
 
     data: () => ({
         item: {
@@ -630,6 +659,31 @@ export default {
         dialog: false,
         dialogFirstWard: false,
         dialogSecondWard: false,
+
+        cardItems:[
+            {
+                id: 1,
+                fio: 'Соколова К.А',
+                address: 'ул. Донская, 8, кв. 17',
+                coords: "55.723869,37.607108",
+                name: "emp", time: "emp"
+            },
+            {
+                id: 2,
+                fio: 'Иванова В.В',
+                address: 'Мытная ул., 44, кв. 134',
+                coords: "55.721070,37.615823",
+                name: "emp", time: "emp"
+            },
+            {
+                id: "+",
+                name: "ООО \"Пятерочка\"",
+                address: 'ул. Шаболовка, 19',
+                time: '21:00-23:00',
+                coords: "55.723595,37.611370",
+                fio: "emp"
+            }
+        ]
     }),
 
     computed: {
