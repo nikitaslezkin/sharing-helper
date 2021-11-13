@@ -5,8 +5,11 @@
                 :src="(usertype && (usertype !== '')) ? imageMain : image"
                 height="100vh"
                 width="100%">
+
             <NavBar :items="items" :drawer="drawer"/>
+
             <Login/>
+
             <v-main>
                 <v-container fluid>
                     <router-view></router-view>
@@ -15,7 +18,6 @@
             <Footer/>
         </v-img>
     </v-app>
-
 </template>
 
 <script>
