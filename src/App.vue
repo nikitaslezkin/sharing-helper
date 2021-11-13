@@ -40,7 +40,7 @@ export default {
     data() {
         return {
             image: require('./assets/background_white_2.jpg'),
-            imageMain: require('./assets/background_main_white.jpg'),
+            imageMain: require('./assets/background_main.jpg'),
 
             drawer: true,
 

@@ -3,14 +3,14 @@
             <v-spacer></v-spacer>
             <v-card width="800px" rounded style="margin-top: 10px">
                 {{label}}
-                <v-radio-group v-model="radioGroup">
-                    <v-radio
+                <v-container v-model="radioGroup">
+                    <v-checkbox
                             v-for="n in items.length"
                             :key="n"
                             :label="items[n - 1]"
                             :value="n"
-                    ></v-radio>
-                </v-radio-group>
+                    ></v-checkbox>
+                </v-container>
             </v-card>
             <v-spacer></v-spacer>
         </v-row>
