@@ -3,6 +3,7 @@ const state = {
     username: null,
     usertype: null,
     islearn: true,
+    lol: 0
 };
 
 const getters = {
@@ -16,6 +17,10 @@ const getters = {
 
     islearn(state) {
         return state.islearn;
+    },
+
+    lol(state) {
+        return state.lol;
     },
 };
 
@@ -33,6 +38,10 @@ const mutations = {
 
     setIslearn(state, islearn) {
         state.islearn = islearn;
+    },
+
+    setLol(state, lol) {
+        state.lol = lol;
     },
 };
 

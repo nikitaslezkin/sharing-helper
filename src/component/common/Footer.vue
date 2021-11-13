@@ -4,7 +4,7 @@
                 style="background-color: #424942;"
                 class="footer-row white--text"
                 width="100%"
-                height="60px"
+                height="52px"
                 flat
                 tile
         >
@@ -12,13 +12,13 @@
                 <v-row>
                     <v-col cols="1"></v-col>
 
-                    <v-col cols="8">
+                    <v-col cols="10">
                         <div>
                             <strong>Sharing Helper</strong> — {{ new Date().getFullYear() }}
                         </div>
                     </v-col>
 
-                    <v-col cols="2"></v-col>
+
 
                     <v-col cols="1">
                         <div>
