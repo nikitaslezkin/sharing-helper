@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-row style="margin-top: 10px; margin-right: 10px">
+        <v-row style="margin-top: -50px; margin-right: 10px">
             <v-spacer></v-spacer>
             <div class="login-dialog" v-if="this.isUsernameExist()">
             </div>

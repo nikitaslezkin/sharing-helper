@@ -28,14 +28,14 @@
 
                     <v-btn
                             class="mt-3"
-                            color="success"
+                            color="#b4d66b"
                             @click="forceRerender">
                         Показать
                     </v-btn>
 
                     <v-btn
                             class="mt-3"
-                            color="success"
+                            color="#b4d66b"
                             @click="$refs.file.click()">
                         Выгрузить данные
                     </v-btn>
