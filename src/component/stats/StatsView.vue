@@ -3,8 +3,6 @@
     <v-row class="fill-height" style="margin-top: 10px">
         <v-spacer></v-spacer>
         <v-col cols="8">
-<!--            Выберите диапазон-->
-
             <v-row>
                 <v-spacer></v-spacer>
                 <v-date-picker
@@ -20,7 +18,6 @@
                     <h3>
                         Узнать статистику за период
                     </h3>
-                    <!--                    Статистика за {{getBetween(dates)}} дней-->
 
                     <h3>
                         с {{ dates[0] }} по {{ dates[1] }}
@@ -39,37 +36,23 @@
                             @click="$refs.file.click()">
                         Выгрузить данные
                     </v-btn>
-
-
                 </v-col>
-
                 <v-spacer></v-spacer>
             </v-row>
-
-
 
             <v-row>
                 <v-spacer></v-spacer>
                 <PieChart v-if="renderComponent" :days="this.lol" :case="1"/>
-
                 <PieChart v-if="renderComponent" :days="this.lol" :case="2"/>
-
                 <v-spacer></v-spacer>
             </v-row>
-            <v-row> &nbsp;</v-row>
-            <v-row> &nbsp;</v-row>
-            <v-row> &nbsp;</v-row>
-            <v-row> &nbsp;</v-row>
-        </v-col>
 
+        </v-col>
         <v-spacer></v-spacer>
     </v-row>
-
 </template>
 
 <script>
-
-
 
 import BarChart from "@/component/charts/BarChart";
 import PieChart from "@/component/charts/PieChart";
