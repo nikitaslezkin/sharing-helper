@@ -19,7 +19,13 @@
                                       v-bind="attrs"
                                       v-on="on">
                                 <img
+                                        v-if="!isVolunteer"
                                         src="../../assets/volunteer.png"
+                                        alt="Волонтер"
+                                >
+                                <img
+                                        v-if="isVolunteer"
+                                        src="../../assets/volunteer2.png"
                                         alt="Волонтер"
                                 >
                             </v-avatar>
@@ -30,7 +36,12 @@
                                 <v-list-item>
                                     <v-list-item-title>
                                         <b>{{ this.usertype }}</b>
+                                        <div v-if="!isVolunteer">
                                         Иванова И.И.
+                                        </div>
+                                        <div v-if="isVolunteer">
+                                            Петров А.В.
+                                        </div>
                                     </v-list-item-title>
                                 </v-list-item>
                             </v-list>
