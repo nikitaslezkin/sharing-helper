@@ -4,8 +4,9 @@
                 class="fill-height"
                 :src="(usertype && (usertype !== '')) ? imageMain : image"
                 height="100vh"
-                width="100%">
-
+                width="100%"
+                position="fixed">
+        </v-img>
             <NavBar :items="items" :drawer="drawer"/>
 
             <Login/>
@@ -16,7 +17,7 @@
                 </v-container>
             </v-main>
             <Footer/>
-        </v-img>
+
     </v-app>
 </template>
 
