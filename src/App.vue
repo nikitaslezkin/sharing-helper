@@ -4,19 +4,20 @@
                 class="fill-height"
                 :src="(usertype && (usertype !== '')) ? imageMain : image"
                 height="100vh"
+                style="position: fixed !important; left: 0; top: 0;"
                 width="100%">
-
-            <NavBar :items="items" :drawer="drawer"/>
-
-            <Login/>
-
-            <v-main>
-                <v-container fluid>
-                    <router-view></router-view>
-                </v-container>
-            </v-main>
-            <Footer/>
         </v-img>
+
+        <NavBar :items="items" :drawer="drawer"/>
+
+        <Login/>
+
+        <v-main>
+            <v-container fluid>
+                <router-view></router-view>
+            </v-container>
+        </v-main>
+        <Footer/>
     </v-app>
 </template>
 
