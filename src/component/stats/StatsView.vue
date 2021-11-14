@@ -1,5 +1,4 @@
 <template>
-
     <v-row class="fill-height" style="margin-top: 10px">
         <v-spacer></v-spacer>
         <v-col cols="8">
@@ -33,7 +32,7 @@
                     <v-btn
                             class="mt-3"
                             color="#b4d66b"
-                            @click="$refs.file.click()">
+                            @click="saveFile">
                         Выгрузить данные
                     </v-btn>
                 </v-col>
@@ -54,22 +53,18 @@
 
 <script>
 
-import BarChart from "@/component/charts/BarChart";
 import PieChart from "@/component/charts/PieChart";
-import RangeCalendar from "@/component/charts/RangeCalendar";
 import {mapGetters, mapMutations} from "vuex";
+
 export default {
     name: "StatsView",
     components: {
-        BarChart,
         PieChart
     },
-
 
     data: () => ({
 
         page: 1,
-
 
         dates: ['2019-09-10', '2019-09-20'],
 
@@ -82,8 +77,6 @@ export default {
         between: 1,
 
         renderComponent: true,
-
-
     }),
 
     computed: {
@@ -103,14 +96,14 @@ export default {
     methods: {
         ...mapMutations(['setLol']),
 
-        getB: function() {
+        getB: function () {
             const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
             const firstDate = new Date(this.dates[0]);
             const secondDate = new Date(this.dates[1]);
 
             const diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay));
             this.setLol(diffDays + 1)
-            return  diffDays + 1
+            return diffDays + 1
         },
 
         forceRerender() {
@@ -121,6 +114,18 @@ export default {
                 // А потом покажем снова
                 this.renderComponent = true;
             });
+        },
+
+        saveFile() {
+            const data = JSON.stringify(this.arr)
+            const blob = new Blob([data], {type: 'text/plain'})
+            const e = document.createEvent('MouseEvents'),
+                a = document.createElement('a');
+            a.download = "Статистка_" + this.dates[0] + "_" + this.dates[1] + ".xlsx";
+            a.href = window.URL.createObjectURL(blob);
+            a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
+            e.initEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+            a.dispatchEvent(e);
         }
     }
 }
